@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    image: print-nester:latest
+    container_name: print-nester
+    ports:
+      - "8000:8000"
+    volumes:
+      - nester-data:/data
+    environment:
+      # 可选：覆盖默认监听与数据路径
+      NESTER_DATA_DIR: /data
+      # NESTER_PORT: 8000
+    restart: unless-stopped
+
+volumes:
+  nester-data:

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D 打印排版</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header>
+  <h1>3D 打印排版</h1>
+  <p class="hint">本地运行 · 单位毫米 · STL（ASCII / 二进制）· 实例总数 ≤ 12 · 仅绕 Z 轴 0°/90°</p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. 打印床参数</h2>
+    <form id="config-form">
+      <label>床宽 W (mm)
+        <input type="number" id="bed_width_mm" step="0.1" min="0.1" required>
+      </label>
+      <label>床深 D (mm)
+        <input type="number" id="bed_depth_mm" step="0.1" min="0.1" required>
+      </label>
+      <label>四边留白 (mm)
+        <input type="number" id="margin_mm" step="0.1" min="0" required>
+      </label>
+      <label>模型间距 (mm)
+        <input type="number" id="gap_mm" step="0.1" min="0" required>
+      </label>
+      <button type="submit">保存参数</button>
+    </form>
+    <p id="printable-info" class="hint"></p>
+  </section>
+
+  <section class="panel">
+    <h2>2. 模型（STL）</h2>
+    <form id="upload-form">
+      <input type="file" id="stl-file" accept=".stl" required>
+      <label>份数
+        <input type="number" id="copies" min="1" max="12" value="1" required>
+      </label>
+      <button type="submit">上传 / 替换</button>
+    </form>
+    <p class="hint">同名文件会替换旧模型；占位取模型原始 XY 投影的轴对齐外接矩形。</p>
+    <table id="models-table">
+      <thead>
+        <tr><th>模型</th><th>宽×深×高 (mm)</th><th>三角面</th><th>份数</th><th></th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p id="instances-info" class="hint"></p>
+  </section>
+
+  <section class="panel">
+    <h2>3. 求解与结果</h2>
+    <div class="actions">
+      <button id="solve-btn" type="button">重新求解（最小批次数）</button>
+      <button id="export-btn" type="button" disabled>下载 JSON</button>
+    </div>
+    <div id="status-banner" class="banner hidden"></div>
+    <div id="results"></div>
+  </section>
+</main>
+
+<div id="toast" class="toast hidden"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
