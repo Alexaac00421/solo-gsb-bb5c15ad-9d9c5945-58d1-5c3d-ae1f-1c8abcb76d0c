@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D 打印排版</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>3D 打印排版</h1>
+
+  <section class="card">
+    <h2>1. 打印床设置（毫米）</h2>
+    <form id="settings-form" class="grid-form">
+      <label>床宽 <input type="number" step="any" min="0" name="bed_w" required></label>
+      <label>床高 <input type="number" step="any" min="0" name="bed_h" required></label>
+      <label>左留白 <input type="number" step="any" min="0" name="margin_left" required></label>
+      <label>右留白 <input type="number" step="any" min="0" name="margin_right" required></label>
+      <label>下留白 <input type="number" step="any" min="0" name="margin_bottom" required></label>
+      <label>上留白 <input type="number" step="any" min="0" name="margin_top" required></label>
+      <label>模型间距 <input type="number" step="any" min="0" name="spacing" required></label>
+      <button type="submit">保存设置</button>
+    </form>
+    <p class="hint">修改床参数会使已有排布失效，需重新求解后才能导出。</p>
+  </section>
+
+  <section class="card">
+    <h2>2. 上传模型（STL，毫米单位）</h2>
+    <form id="model-form" class="grid-form">
+      <label>STL 文件 <input type="file" name="file" accept=".stl" required></label>
+      <label>份数 <input type="number" name="copies" min="1" max="12" value="1" required></label>
+      <button type="submit">上传 / 替换模型</button>
+    </form>
+    <p id="model-info" class="hint">尚未上传模型。</p>
+  </section>
+
+  <section class="card">
+    <h2>3. 求解</h2>
+    <button id="solve-btn">求解最小批次数</button>
+    <span id="message" class="message"></span>
+  </section>
+
+  <section class="card" id="result-section" hidden>
+    <h2>4. 排布结果</h2>
+    <div id="stale-banner" class="stale" hidden>当前排布已失效（床参数或模型已变更），请重新求解。失效期间不可导出。</div>
+    <div id="batch-summary"></div>
+    <div id="batch-tabs" class="tabs"></div>
+    <canvas id="canvas" width="760" height="520"></canvas>
+    <table id="instance-table">
+      <thead>
+        <tr><th>模型</th><th>份号</th><th>方向</th><th>左下角 X (mm)</th><th>左下角 Y (mm)</th><th>占位宽×高 (mm)</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="export-btn">下载 JSON</button>
+  </section>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
